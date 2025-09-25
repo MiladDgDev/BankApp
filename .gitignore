@@ -1,0 +1,59 @@
+﻿# Build results
+bin/
+obj/
+[Bb]uild/
+[Ll]og/
+TestResults/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio files
+.vs/
+*.dbmdl
+*.pdb
+*.cache
+*.ide
+
+# NuGet packages
+*.nupkg
+*.snupkg
+.nuget/
+packages/
+*.nuspec
+
+# Windows Forms designer files
+*.Designer.cs
+
+# Auto-generated files
+*.Generated.cs
+
+# Resharper
+_ReSharper*/
+*.DotSettings.user
+
+# Others
+*.vspscc
+*.vssscc
+*.tmp
+*.bak
+*.swp
+*.sln.ide
+
+# OneDrive/Cloud sync
+*.~*
+
+# SQL Server files
+*.mdf
+*.ldf
+
+# OS generated files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# User-specific files
+*.local.json
+/.idea/.idea.BankSoftwareAdoSample/.idea
