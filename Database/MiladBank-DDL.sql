@@ -1,0 +1,85 @@
+DROP DATABASE IF EXISTS MiladBank;
+GO
+
+CREATE DATABASE MiladBank;
+GO
+
+USE MiladBank;
+GO
+
+CREATE TABLE Customers(
+CustomerId				UNIQUEIDENTIFIER NOT NULL DEFAULT NEWID(),
+FirstName				NVARCHAR(100) NOT NULL,
+LastName				NVARCHAR(100) NOT NULL,
+Street					NVARCHAR(200) NOT NULL,
+HouseNumber				NVARCHAR(25) NOT NULL,
+ZipCode					NVARCHAR(25) NOT NULL,
+City					NVARCHAR(100) NOT NULL,
+PhoneNumber				NVARCHAR(50) NOT NULL,
+EmailAddress			NVARCHAR(100) NOT NULL,
+CONSTRAINT PK_Customer PRIMARY KEY (CustomerId),
+CONSTRAINT UQ_Customer_EmailAddress UNIQUE (EmailAddress)
+);
+
+GO
+
+
+CREATE TABLE Accounts(
+AccountId				UNIQUEIDENTIFIER NOT NULL DEFAULT NEWID(),
+CustomerId				UNIQUEIDENTIFIER NOT NULL,
+AccountNumber			NVARCHAR(50) NOT NULL,
+Iban					NVARCHAR(50) NOT NULL,
+OpeningBalance			DECIMAL(20,4) NOT NULL,
+CreatedAt				DATETIMEOFFSET NOT NULL,
+IsActive				BIT NOT NULL,
+CONSTRAINT PK_Account PRIMARY KEY (AccountId),
+CONSTRAINT FK_Account_CustomerId FOREIGN KEY (CustomerId)
+	REFERENCES Customers (CustomerId)
+	ON DELETE NO ACTION
+	ON UPDATE NO ACTION,
+CONSTRAINT UQ_Account_AccountNumber UNIQUE (AccountNumber),
+CONSTRAINT UQ_Account_Iban UNIQUE (Iban)
+);
+GO
+
+
+CREATE TABLE AccountTransactions(
+TransactionId				UNIQUEIDENTIFIER NOT NULL DEFAULT NEWID(),
+AccountId					UNIQUEIDENTIFIER NOT NULL,
+TransactionDateTime			DATETIMEOFFSET NOT NULL,
+Amount						DECIMAL (20,4) NOT NULL,
+Description					NVARCHAR(MAX) NOT NULL,
+TransactionType				INT NOT NULL,
+CONSTRAINT PK_AccountTransaction PRIMARY KEY (TransactionId),
+CONSTRAINT FK_AccountTransaction_AcountId FOREIGN KEY (AccountId)
+	REFERENCES Accounts (AccountId)
+	ON DELETE NO ACTION
+	ON UPDATE NO ACTION
+);
+GO
+
+
+CREATE TABLE BalanceSnapshots(
+BalanceSnapshotId			UNIQUEIDENTIFIER NOT NULL DEFAULT NEWID(),
+AccountId					UNIQUEIDENTIFIER NOT NULL,
+Balance						DECIMAL(20,4) NOT NULL,
+SnapshotDateTime			DATETIMEOFFSET NOT NULL,
+SnapshotHash				NVARCHAR(200) NOT NULL,
+CONSTRAINT PK_BalanceSnapshot PRIMARY KEY (BalanceSnapshotId),
+CONSTRAINT FK_BalanceSnapshot_AccountId FOREIGN KEY (AccountId)
+	REFERENCES Accounts (AccountId)
+	ON DELETE NO ACTION
+	ON UPDATE NO ACTION,
+CONSTRAINT UQ_BalanceSnapshots_SnapshotHash UNIQUE (SnapshotHash)
+);
+GO
+
+CREATE SEQUENCE AccountNumberSequence
+    AS BIGINT
+    START WITH 1
+    INCREMENT BY 1
+    MINVALUE 1
+    MAXVALUE 9999999999
+    NO CYCLE;
+GO
+

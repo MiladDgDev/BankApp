@@ -23,9 +23,6 @@ TestResults/
 packages/
 *.nuspec
 
-# Windows Forms designer files
-*.Designer.cs
-
 # Auto-generated files
 *.Generated.cs
 
